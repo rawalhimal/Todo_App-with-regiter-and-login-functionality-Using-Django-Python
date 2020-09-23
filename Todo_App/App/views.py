@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.utils import timezone
-from .models import Todo
-from django.http import HttpResponseRedirect
+from .models import Todo,Contact
+from django.http import HttpResponseRedirect,HttpResponse
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from .forms import CreateUserForm
@@ -59,5 +59,15 @@ def register(request):
 def logoutUser(request):
     logout(request)
     return redirect('login')
+
+def contact(request):
+    if request.method=="POST":
+        name = request.POST.get('name', '')
+        email = request.POST.get('email', '')
+        phone = request.POST.get('phone', '')
+        desc = request.POST.get('desc', '')
+        contact = Contact(name=name, email=email, phone=phone, desc=desc)
+        contact.save()
+    return render(request, 'main/contact.html')
 
 
